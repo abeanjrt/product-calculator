@@ -1,0 +1,125 @@
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    /* background-color: #002F5D; */
+    color: #D1E4F0;
+    padding: 40px;
+    margin: 0;
+}
+
+h1 {
+    color: #1D75BB;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto 20px;
+    font-size: 24px;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #0C4D8D;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.radio-group label {
+    flex: 1;
+    padding: 12px;
+    background: #D1E4F0;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    color: #002F5D;
+}
+
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+.radio-group input[type="radio"]:checked + label {
+    background: #1D75BB;
+    border-color: #1D75BB;
+    color: white;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-row label {
+    flex: 1;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #D1E4F0;
+}
+
+.input-row input {
+    flex: 2;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background: #D1E4F0;
+    color: #002F5D;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #1D75BB;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0C4D8D;
+}
+
+.result-box {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: left;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #1D75BB;
+    color: black;
+}
+
+#heads_up {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFD700; /* Yellow alert */
+}
+
+img {
+    display: block;
+    margin: auto;
+    /* width: 50%; */
+  }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Material Calculator</title>
+</head>
+<body>
+    <a href="https://www.jrtharpetrucking.com">Return to JRT HomePage</a>
+    <form method="post">
+        <!-- 1. Area Type Selector -->
+
+
+        <div class="radio-group">
+            <input type="radio" name="area_type" value="1" id="rect" required checked>
+            <label for="rect">🟦 Rectangular Area</label>
+
+            <input type="radio" name="area_type" value="2" id="circle">
+            <label for="circle">⚪ Circle</label>
+
+            <input type="radio" name="area_type" value="3" id="void">
+            <label for="void">⭕ Void within Circle</label>
+        </div>
+
+        <!-- Rectangle Inputs -->
+        <div id="rectangleInputs" class="input-group">
+            <h3>1. Measure the area</h3>
+            <div class="input-row">
+                <label for="length">Length (ft):</label>
+                <input type="number" name="length" id="length" min="0">
+            </div>
+            <div class="input-row">
+                <label for="width">Width (ft):</label>
+                <input type="number" name="width" id="width" min="0">
+            </div>
+            <hr>
+            <h3>2. Estimate the needed depth</h3>
+            <div class="input-row">
+                <label for="depth_rect">Depth (in):</label>
+                <input type="number" name="depth_rect" id="depth_rect" min="0">
+            </div>
+        </div>
+
+        <!-- Cylinder Inputs -->
+        <div id="cylinderInputs" class="input-group" style="display: none;">
+            <h3>1. Measure the area (Radius is half the center length of the Circle)</h3>
+            <div class="input-row">
+                <label for="radius">Radius (ft):</label>
+                <input type="number" name="radius" id="radius" min="0">
+            </div>
+            <hr>
+            <h3>2. Estimate the needed depth</h3>
+            <div class="input-row">
+                <label for="depth_circle">Depth (in):</label>
+                <input type="number" name="depth_circle" id="depth_circle" min="0">
+            </div>
+        </div>
+
+        <!-- Cylinder with Void Inputs -->
+        <div id="cylinderVoidInputs" class="input-group" style="display: none;">
+            <div class="input-row">
+                <label for="radius1">Radius of the Outside Circle (ft):</label>
+                <input type="number" name="radius1" id="radius1" min="0">
+            </div>
+            <div class="input-row">
+                <label for="radius2">Radius of the Inside Circle (ft):</label>
+                <input type="number" name="radius2" id="radius2" min="0">
+            </div>
+            <div class="input-row">
+                <label for="depth_circle_void">Depth (in):</label>
+                <input type="number" name="depth_circle_void" id="depth_circle_void" min="0">
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Calculate</button>
+    </form>
+
+
+    <h3 id="heads_up"></p></h3>
+    <div class="result-box">
+        <h3 id="result"></h3>
+        <p id="disclaimer"></p>
+    </div>
+
+    <img src="jrt-logo.jpg" alt="">
+
+    <script>
+        document.querySelectorAll('input[name="area_type"]').forEach((elem) => {
+            elem.addEventListener("change", function() {
+                document.getElementById("rectangleInputs").style.display = (this.value == "1") ? "block" : "none";
+                document.getElementById("cylinderInputs").style.display = (this.value == "2") ? "block" : "none";
+                document.getElementById("cylinderVoidInputs").style.display = (this.value == "3") ? "block" : "none";
+            });
+        });
+
+        document.querySelector("form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            let volume = 0;
+            let tonnage = 0;
+
+            console.log(data)
+
+            if (data['area_type'] === '1') {
+                length = parseFloat(data['length']);
+                width = parseFloat(data['width']);
+                depth = parseFloat(data['depth_rect'])/12;
+
+                if (isNaN(length) || isNaN(width) || isNaN(depth * 12) || length<=0 || width<=0 || depth<= 0) {
+                    alert("Please enter valid numbers for length, width, and depth.");
+                    return;
+                }
+                volume = (length*width*depth)/27;
+                volume = Number(volume.toFixed(2));
+                tonnage = volume * 1.387;
+                tonnage = Number(tonnage.toFixed(2));
+            };
+            if (data['area_type'] === '2') {
+                radius = parseFloat(data['radius']);
+                depth = parseFloat(data['depth_circle'])/12;
+
+                if (isNaN(radius) || isNaN(depth) || radius <= 0 || depth <= 0 ) {
+                    alert("Please enter valid numbers for radius and depth.");
+                    return;
+                };
+
+                volume = (Math.PI * Math.pow(radius, 2) * depth)/27;
+                volume = Number(volume.toFixed(2));
+                tonnage = volume * 1.396;
+                tonnage = Number(tonnage.toFixed(2));
+
+
+            }
+            if (data['area_type'] === '3') {
+                radius_1 = parseFloat(data['radius1']);
+                radius_2 = parseFloat(data['radius2']);
+                depth = parseFloat(data['depth_circle_void'])/12;
+
+                if (isNaN(radius_1) || isNaN(radius_2) || isNaN(depth) || radius_1 <= 0 || radius_2 <= 0 || depth <= 0 || (radius_1 - radius_2) === 0) {
+                    alert("Please enter valid numbers for the 2 radius and depth.");
+                    return
+                };
+
+                volume_1 = (Math.PI * Math.pow(radius_1, 2) * depth);
+                volume_2 = (Math.PI * Math.pow(radius_2, 2) * depth);
+                volume = (volume_1/27) - (volume_2/27);
+                console.log(volume);
+                volume = Number(volume.toFixed(2));
+                tonnage = volume * 1.4010;
+                tonnage = Number(tonnage.toFixed(2));
+
+
+            }
+
+            const loads_by_ton = tonnage / 1.5;
+            const loads_by_volume = volume / 3;
+            const f150_loads = (Math.max(loads_by_ton, loads_by_volume));
+            if (volume >= 10000 || tonnage >= 10000) {
+                document.getElementById("result").innerHTML = `Estimated Tons: ${tonnage} tons <br><br> Estimated Cubic Yards: ${volume} yd³ <br><br>`;
+                document.getElementById("disclaimer").innerText = "* Use an independent contractor for specific project requirements <br> *Note product estimates vary, such as natural sand or limestone";
+                document.getElementById("heads_up").innerText = "Heads up, you have a large area and tonnage, double check your numbers before proceeding.";
+            }
+            else {
+                document.getElementById("result").innerHTML = `Estimated Tons: ${tonnage} tons <br><br> Estimated Cubic Yards: ${volume} yd³ <br><br> Yard Scoops: ${tonnage*2} <br><br> Personal Truckloads (1.5 max tons in empty bed): ${Number((f150_loads).toFixed(2))}<br><p>`;
+                document.getElementById("disclaimer").innerHTML = "* Use an independent contractor for specific project requirements  <br>* Note product estimates vary, such as natural sand or limestone <br> * Estimated Truckloads is an estimate only, comply with local laws to secure your load and do not exceed highway weight limits, or limits set by your vehicle's manufacturer. Not responsible for damage once loaded.";
+                document.getElementById("heads_up").innerText = "";
+            }
+
+        });
+
+        // Show the correct input group on page load based on the default selection
+        window.addEventListener("DOMContentLoaded", () => {
+            const defaultChecked = document.querySelector('input[name="area_type"]:checked');
+            if (defaultChecked) {
+                defaultChecked.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>
