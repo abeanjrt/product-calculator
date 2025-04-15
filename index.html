@@ -164,8 +164,8 @@
                 document.getElementById("heads_up").innerText = "Heads up, you have a large area and tonnage, double check your numbers before proceeding.";
             }
             else {
-                document.getElementById("result").innerHTML = `Estimated Tons: ${tonnage} tons <br><br> Estimated Cubic Yards: ${volume} yd³ <br><br> Yard Scoops: ${tonnage*2} <br><br> Personal Truckloads (1.5 max tons in empty bed): ${Number((f150_loads).toFixed(2))}<br><p>`;
-                document.getElementById("disclaimer").innerHTML = "* Use an independent contractor for specific project requirements  <br>* Note product estimates vary, such as natural sand or limestone <br> * Estimated Truckloads is an estimate only, comply with local laws to secure your load and do not exceed highway weight limits, or limits set by your vehicle's manufacturer. Not responsible for damage once loaded.";
+                document.getElementById("result").innerHTML = `Estimated Tons: ${tonnage} tons <br><br> Estimated Cubic Yards: ${volume} yd³ <br><br>`;
+                document.getElementById("disclaimer").innerHTML = "* Use an independent contractor for specific project requirements  <br>* Note product estimates vary, such as natural sand or limestone <br>";
                 document.getElementById("heads_up").innerText = "";
             }
 
